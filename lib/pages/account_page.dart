@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo/main11.dart';
 import 'package:todo/pages/login_page.dart';
 
 class AccountPage extends StatefulWidget {
