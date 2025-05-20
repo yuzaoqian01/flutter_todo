@@ -13,12 +13,9 @@ class IndexPage extends StatefulWidget {
 }
 
 
-
 class _IndexPageState extends State<IndexPage> {
-  
- 
+  // Function to get the list of todos from SharedPreferences 
   Future getTodos() async {
-    // Simulate fetching data from a database or API
     var res = await SharedPrefsUtil.getObjectList(
       "todo_list",
       (map) => Todo.fromJson(map),
@@ -29,8 +26,9 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   List<Todo> todos = [];
-
   List<int> selectedItems = [];
+
+
 
   @override
   void initState() {
@@ -61,15 +59,38 @@ class _IndexPageState extends State<IndexPage> {
           var todo = todos[index];
           bool isSelected = selectedItems.contains(todo.id);
           return ListTile(
-            title: Text(todo.title),
-            subtitle: Text(todo.description),
+            title: Text(todo.title, style: TextStyle(
+              color: todo.isCompleted?Colors.red:Colors.blue,
+              decoration: todo.isCompleted? TextDecoration.lineThrough:TextDecoration.none  
+            ),),
+            subtitle: Text(todo.description,
+              style: TextStyle(
+              color: todo.isCompleted?Colors.red:Colors.blue,
+              decoration: todo.isCompleted? TextDecoration.lineThrough:TextDecoration.none
+              ),
+            ),
             leading: Checkbox(value: isSelected, onChanged: (value) {
               setState(() {
                 if (value == true) {
                   selectedItems.add(todo.id);
+                  todos[index].isCompleted = true;
+                  SharedPrefsUtil.saveObjectList(
+                    "todo_list",
+                    todos,
+                    (todo) => todo.toJson(),
+                  );
                 } else {
                   selectedItems.remove(todo.id);
+                  todos[index].isCompleted = false;
+                  SharedPrefsUtil.saveObjectList(
+                    "todo_list",
+                    todos,
+                    (todo) => todo.toJson(),
+                  );
                 }
+                setState(() {
+                  todos[index].isCompleted = value!;
+                });
               });
             }),
             trailing: Row(
@@ -79,23 +100,57 @@ class _IndexPageState extends State<IndexPage> {
                   padding: const EdgeInsets.only(right: 4),
                   icon: const Icon(Icons.edit, size: 15,),
                   splashRadius: 8,
-                  onPressed: () {
+                  onPressed: () async{
                     // Handle edit action
-                    Navigator.of(context).push(
+                   final result = await Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => TodoEditPage(
                           todoId: todo.id, // Pass the todo ID or object here
                         ),
                       ),
                     );
+                    if (result == 'refresh') {
+                      getTodos();
+                    }
                   },
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, size: 15,),
                   color: Colors.red,
                   splashRadius: 8,
-                  onPressed: () {
+                  onPressed: () async {
                     // Handle delete action
+                    
+                    setState(() {
+                      todos.removeAt(index);
+                      SharedPrefsUtil.saveObjectList(
+                        "todo_list",
+                        todos,
+                        (todo) => todo.toJson(),
+                      );
+                    });
+
+                    
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('删除成功'),
+                        action: SnackBarAction(
+                          label: '撤销',
+                          onPressed: () {
+                            // Handle undo action
+                            setState(() {
+                              todos.insert(index, todo);
+                              SharedPrefsUtil.saveObjectList(
+                                "todo_list",
+                                todos,
+                                (todo) => todo.toJson(),
+                              );
+                            });
+                          },
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],
