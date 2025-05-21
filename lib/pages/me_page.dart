@@ -83,6 +83,12 @@ class _MePageState extends State<MePage> {
               },
               child: const Text('版本信息'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/lang');
+              },
+              child: const Text('语言国际化'),
+            ),
           ],
         ),
       ),

@@ -10,9 +10,12 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_secure_storage: ^9.2.4
   google_fonts: ^6.2.1
   http: ^1.4.0
+  intl: any
   local_auth: ^2.3.0
   package_info_plus: ^8.3.0
   path: ^1.9.1
@@ -28,3 +31,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

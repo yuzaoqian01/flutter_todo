@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 import 'package:todo/pages/index_page.dart';
@@ -10,6 +12,7 @@ import 'package:todo/pages/todo_detail.dart';
 import 'package:todo/pages/local_auth_page.dart';
 import 'package:todo/pages/file_page.dart';
 import 'package:todo/pages/version_page.dart';
+import 'package:todo/pages/lang_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +28,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
+    localizationsDelegates: [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      Locale('en'), // English
+      Locale('es'), // Spanish
+    ],
     themeMode: ThemeMode.light,
      theme: ThemeData(
       colorScheme: const ColorScheme.light(
@@ -57,6 +70,7 @@ class MyApp extends StatelessWidget {
       '/local_auth': (context) => const LocalAuthPage(),
       '/file': (context) => const FilePage(),
       '/version': (context) => const VersionPage(),
+      '/lang': (context) => const LangePage(),
     },
     home: HomePage()
   );
