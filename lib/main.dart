@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import 'package:todo/pages/index_page.dart';
@@ -6,8 +7,18 @@ import 'package:todo/pages/find_page.dart';
 import 'package:todo/pages/me_page.dart';
 import 'package:todo/pages/field.dart';
 import 'package:todo/pages/todo_detail.dart';
+import 'package:todo/pages/local_auth_page.dart';
+import 'package:todo/pages/file_page.dart';
+import 'package:todo/pages/version_page.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://qbphwnrkbrgabxtejstl.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFicGh3bnJrYnJnYWJ4dGVqc3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDIwNDUsImV4cCI6MjA1MTkxODA0NX0._dN7wR7Tma-YW2Mq_Q9xUMpX2jGmUf64ihdt_CQLwRU',
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -43,6 +54,9 @@ class MyApp extends StatelessWidget {
     routes: {
       '/field': (context) => const FieldPage(),
       '/todoDetail/:id': (context) => const TodoEditPage(),
+      '/local_auth': (context) => const LocalAuthPage(),
+      '/file': (context) => const FilePage(),
+      '/version': (context) => const VersionPage(),
     },
     home: HomePage()
   );

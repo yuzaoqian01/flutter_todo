@@ -62,11 +62,12 @@ class _IndexPageState extends State<IndexPage> {
             title: Text(todo.title, style: TextStyle(
               color: todo.isCompleted?Colors.red:Colors.blue,
               decoration: todo.isCompleted? TextDecoration.lineThrough:TextDecoration.none  
-            ),),
+             ),
+            ),
             subtitle: Text(todo.description,
               style: TextStyle(
-              color: todo.isCompleted?Colors.red:Colors.blue,
-              decoration: todo.isCompleted? TextDecoration.lineThrough:TextDecoration.none
+                  color: todo.isCompleted?Colors.red:Colors.blue,
+                  decoration: todo.isCompleted? TextDecoration.lineThrough:TextDecoration.none
               ),
             ),
             leading: Checkbox(value: isSelected, onChanged: (value) {
@@ -97,7 +98,7 @@ class _IndexPageState extends State<IndexPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  padding: const EdgeInsets.only(right: 4),
+                  padding: const EdgeInsets.only(right: 0),
                   icon: const Icon(Icons.edit, size: 15,),
                   splashRadius: 8,
                   onPressed: () async{
@@ -119,8 +120,6 @@ class _IndexPageState extends State<IndexPage> {
                   color: Colors.red,
                   splashRadius: 8,
                   onPressed: () async {
-                    // Handle delete action
-                    
                     setState(() {
                       todos.removeAt(index);
                       SharedPrefsUtil.saveObjectList(
@@ -129,9 +128,6 @@ class _IndexPageState extends State<IndexPage> {
                         (todo) => todo.toJson(),
                       );
                     });
-
-                    
-                    
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text('删除成功'),
@@ -167,8 +163,9 @@ class _IndexPageState extends State<IndexPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        mini: true,
         backgroundColor: Colors.blue,
-        highlightElevation: 10,
+        highlightElevation: 1,
         onPressed:  () async {
           // Handle add action
           final result = await Navigator.of(context).push(
